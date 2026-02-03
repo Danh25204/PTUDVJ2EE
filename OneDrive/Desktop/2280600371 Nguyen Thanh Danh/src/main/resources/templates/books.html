@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: html(title='Danh Sách Sách', content=~{::div#content})">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 30px;
+            margin-bottom: 25px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-add:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .empty {
+            text-align: center;
+            color: #999;
+            padding: 60px 40px;
+            font-size: 18px;
+        }
+        .empty a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .empty a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .btn {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+        }
+        .btn-delete {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 2px 8px rgba(245, 87, 108, 0.3);
+        }
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h2><i class="fas fa-list"></i> Danh Sách Sách</h2>
+        
+        <a href="/books/add" class="btn-add"><i class="fas fa-plus"></i> Thêm Sách Mới</a>
+
+        <div th:if="${books.isEmpty()}" class="empty">
+            <i class="fas fa-inbox" style="font-size: 3em; color: #ddd; margin-bottom: 20px;"></i>
+            <p>Chưa có sách nào trong danh sách</p>
+            <p style="margin-top: 15px;"><a href="/books/add">Thêm sách mới ngay</a></p>
+        </div>
+
+        <table th:if="${!books.isEmpty()}">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-book"></i> Tiêu đề</th>
+                    <th><i class="fas fa-user"></i> Tác giả</th>
+                    <th><i class="fas fa-cogs"></i> Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.id}"></td>
+                    <td th:text="${book.title}"></td>
+                    <td th:text="${book.author}"></td>
+                    <td>
+                        <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-edit"><i class="fas fa-edit"></i> Sửa</a>
+                        <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-delete" onclick="return confirm('Bạn chắc chắn muốn xóa sách này?');"><i class="fas fa-trash"></i> Xóa</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
